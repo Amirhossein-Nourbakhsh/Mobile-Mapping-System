@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mobile Mapping System</title>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrJB7KCS0yeqz08s1cJYvYv22QwmZXE2Y&callback=initMap&libraries=&v=weekly"
+      defer
+    ></script>
+    <style type="text/css">
+      /* Set the size of the div element that contains the map */
+      #map {
+        height: 400px;
+        /* The height is 400 pixels */
+        width: 100%;
+        /* The width is the width of the web page */
+      }
+    </style>
+    <script>
+      // Initialize and add the map
+      function initMap() {
+        // The location of Uluru
+        const uluru = { lat: 43.7742762, lng: -79.5041315 };
+        // The map, centered at Uluru
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 15,
+          center: uluru,
+        });
+        // The marker, positioned at Uluru
+        const marker = new google.maps.Marker({
+          position: uluru,
+          map: map,
+        });
+
+
+           // Create a <script> tag and set the USGS URL as the source.
+        const script = document.createElement("script");
+        // This example uses a local copy of the GeoJSON stored at
+        // http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp
+        script.src =
+          "http://localhost:3000/bumps";
+        document.getElementsByTagName("head")[0].appendChild(script);
+
+        let requestURL = 'http://localhost:3000/bumps';
+         let request = new XMLHttpRequest();
+         request.open('GET', requestURL);
+          request.responseType = 'json';
+          request.send();
+          request.onload = function() {
+          const superHeroes = request.response;
+         // console.log(superHeroes);
+
+
+          var infoWindow = new google.maps.InfoWindow(), marker, i;
+
+ 
+          var markers = [];
+          for (let i = 0; i < superHeroes.length; i++) {
+           
+          var lat = superHeroes[i].lat;
+          var lon = superHeroes[i].lon;
+          var latLng = new google.maps.LatLng(lat, lon);
+          console.log(latLng);
+        
+          marker =  new google.maps.Marker({
+            position: latLng,
+            map: map,
+          });
+          markers.push(marker);
+         
+        }
+       
+        /*  for(var i=0; i<markers.length; i++){
+             console.log( markers[i] );
+          markers=   new google.maps.Marker({
+            position: markers[i],
+            map: map,
+           // animation: google.maps.Animation.BOUNCE
+            
+            });
+         }*/
+          
+       /* for (let i = 0; i < markers.length; i++) {
+         // console.log(markers.length);
+        //  console.log("inside the second for");
+
+          markers[i].setMap(map);
+        }*/
+      
+          }
+
+      }
+
+
+     
+
+
+
+      
+
+
+
+
+    </script>
+
+
+
+
+  
+<!-- 
+   fileSelector.addEventListener('change', (event) => {
+    const fileList = event.target.files[0].text;
+    console.log(fileList);
+  });
+
+ onchange="this.files[0].text().then(t => console.log(t))"
+
+
+   for (let i = 0; i < results.features.length; i++) {
+          const coords = results.features[i].geometry.coordinates;
+          const latLng = new google.maps.LatLng(coords[1], coords[0]);
+          new google.maps.Marker({
+            position: latLng,
+            map: map,
+          });
+        }
+
+  -->
+
+ <script type="text/css" src="text.txt" >
+   
+    
+ </script>
+
+
+  </head>
+  <body>
+    <h3>Mobile Mapping System Final Project</h3>
+    <!--The div element for the map -->
+    <div id="map"></div>
+  </body>
+</html>
